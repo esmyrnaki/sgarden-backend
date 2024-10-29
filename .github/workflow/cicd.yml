@@ -19,3 +19,15 @@ jobs:
 
       - name: Run tests
         run: npm run tests
+
+  cd:
+    runs-on: ubundu-latest
+    needs: ci
+    steps:
+      - name: Deploy to Render
+        uses: johnbeynon/render-deploy-action@v0.0.8
+        with:
+          service-id: ${{ secrets.RENDER_SERVICE_ID }}
+          api-key: ${{ secrtes.RENDER_API_KEY }}
+
+      
