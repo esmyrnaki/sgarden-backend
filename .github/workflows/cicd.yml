@@ -1,0 +1,33 @@
+name: cicd
+
+on: push
+
+jobs:
+  ci:
+    runs-on: ubundu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Setup nodejs
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+
+      - name: Download dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm run tests
+
+  cd:
+    runs-on: ubundu-latest
+    needs: ci
+    steps:
+      - name: Deploy to Render
+        uses: johnbeynon/render-deploy-action@v0.0.8
+        with:
+          service-id: ${{ secrets.RENDER_SERVICE_ID }}
+          api-key: ${{ secrtes.RENDER_API_KEY }}
+
+      
